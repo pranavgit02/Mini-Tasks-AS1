@@ -27,8 +27,7 @@ android {
         }
     }
 
-    // Use Java 17 for source/target (recommended with modern AGP);
-    // It's fine if your Gradle JDK is 21 — this is the toolchain for compilation.
+    // Recommended toolchain
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -36,7 +35,7 @@ android {
     kotlinOptions { jvmTarget = "17" }
 
     buildFeatures { compose = true }
-    // No composeOptions block needed when using the Kotlin Compose plugin from the version catalog.
+    // Using the Kotlin Compose plugin from your version catalog → no composeOptions block needed.
 }
 
 dependencies {
@@ -50,12 +49,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // ✅ Needed for Task 1 (Coroutines & Flow in a ViewModel + Compose collection)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.4")
-    // Needed for viewModel() in Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    // ✅ Needed for Task 1 & Task 2
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")          // ViewModel + viewModelScope
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.4")        // collectAsStateWithLifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")      // viewModel() in Compose
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")    // coroutines on Android
 
     // Tests
     testImplementation(libs.junit)
