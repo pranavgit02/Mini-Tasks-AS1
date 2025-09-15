@@ -1,5 +1,6 @@
 package com.example.streamchatdemo
 
+import androidx.compose.runtime.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures

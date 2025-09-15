@@ -1,5 +1,6 @@
 package com.example.streamchatdemo
 
+import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,23 +13,24 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-/**
- * Task 5: Greeting Service Demo
- * Uses GreetingViewModel (Hilt DI) to call Real or Fake service
- * based on the toggle in Settings.
- */
 @Composable
 fun GreetingScreen(vm: GreetingViewModel = hiltViewModel()) {
     val useFake by vm.useFake.collectAsStateWithLifecycle()
     val greeting by vm.greeting.collectAsStateWithLifecycle()
+    val lastName by vm.lastName.collectAsStateWithLifecycle()
 
-    var name by remember { mutableStateOf("world") }
+    // Prefill the name with the value from DataStore on first composition
+    var name by rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(lastName) {
+        if (name.isEmpty()) name = lastName
+    }
 
     Column(
         modifier = Modifier
@@ -56,10 +58,7 @@ fun GreetingScreen(vm: GreetingViewModel = hiltViewModel()) {
         Spacer(Modifier.height(8.dp))
 
         Text(
-            text = when (val g = greeting) {
-                null -> "Result will appear here…"
-                else -> "Result: $g"
-            }
+            text = greeting?.let { "Result: $it" } ?: "Result will appear here…"
         )
     }
 }

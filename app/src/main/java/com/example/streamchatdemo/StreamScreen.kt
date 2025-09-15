@@ -1,5 +1,6 @@
 package com.example.streamchatdemo
 
+import androidx.compose.runtime.*
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
