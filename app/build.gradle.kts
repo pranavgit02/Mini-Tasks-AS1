@@ -88,6 +88,8 @@ dependencies {
 
     // ✅ DataStore (Preferences)
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
+
 
     // Tests / tooling
     testImplementation(libs.junit)
