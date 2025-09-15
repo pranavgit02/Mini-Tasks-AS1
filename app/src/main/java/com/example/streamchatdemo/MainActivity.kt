@@ -25,8 +25,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 
-// Screens in our app
-enum class Screen { Stream, Messages, Canvas, Settings }
+// Add Greeting so we can showcase all mini-demos
+enum class Screen { Stream, Messages, Greeting, Canvas, Settings }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class) // 👈 opt-in to use CenterAlignedTopAppBar
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeMenuOnly() {
     var current by remember { mutableStateOf(Screen.Stream) }
@@ -68,6 +68,9 @@ private fun HomeMenuOnly() {
                         DropdownMenuItem(text = { Text("Messages") }, onClick = {
                             current = Screen.Messages; menuOpen = false
                         })
+                        DropdownMenuItem(text = { Text("Greeting") }, onClick = {
+                            current = Screen.Greeting; menuOpen = false
+                        })
                         DropdownMenuItem(text = { Text("Canvas") }, onClick = {
                             current = Screen.Canvas; menuOpen = false
                         })
@@ -81,9 +84,10 @@ private fun HomeMenuOnly() {
     ) { inner ->
         Column(Modifier.padding(inner)) {
             when (current) {
-                Screen.Stream -> StreamScreen()
+                Screen.Stream   -> StreamScreen()
                 Screen.Messages -> MessagesScreen()
-                Screen.Canvas -> CanvasScreen()
+                Screen.Greeting -> GreetingScreen()
+                Screen.Canvas   -> CanvasScreen()
                 Screen.Settings -> SettingsScreen()
             }
         }
