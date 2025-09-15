@@ -4,19 +4,31 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import dagger.hilt.android.AndroidEntryPoint
 
-enum class Screen { Stream, Messages, Canvas }
+// Screens in our app
+enum class Screen { Stream, Messages, Canvas, Settings }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class) // 👈 opt-in to use CenterAlignedTopAppBar
 @Composable
 private fun HomeMenuOnly() {
     var current by remember { mutableStateOf(Screen.Stream) }
@@ -59,6 +71,9 @@ private fun HomeMenuOnly() {
                         DropdownMenuItem(text = { Text("Canvas") }, onClick = {
                             current = Screen.Canvas; menuOpen = false
                         })
+                        DropdownMenuItem(text = { Text("Settings") }, onClick = {
+                            current = Screen.Settings; menuOpen = false
+                        })
                     }
                 }
             )
@@ -69,6 +84,7 @@ private fun HomeMenuOnly() {
                 Screen.Stream -> StreamScreen()
                 Screen.Messages -> MessagesScreen()
                 Screen.Canvas -> CanvasScreen()
+                Screen.Settings -> SettingsScreen()
             }
         }
     }

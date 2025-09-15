@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // Hilt
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -27,7 +31,6 @@ android {
         }
     }
 
-    // Recommended toolchain
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -35,11 +38,10 @@ android {
     kotlinOptions { jvmTarget = "17" }
 
     buildFeatures { compose = true }
-    // Using the Kotlin Compose plugin from your version catalog → no composeOptions block needed.
 }
 
 dependencies {
-    // From template / version catalog
+    // Template / Compose
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,11 +51,18 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // ✅ Needed for Task 1 & Task 2
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")          // ViewModel + viewModelScope
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.4")        // collectAsStateWithLifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")      // viewModel() in Compose
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")    // coroutines on Android
+    // Task 1/2: ViewModel + Compose + Coroutines
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+
+    // ✅ Task 4: Hilt DI
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("com.google.android.material:material:1.12.0")
+
 
     // Tests
     testImplementation(libs.junit)
