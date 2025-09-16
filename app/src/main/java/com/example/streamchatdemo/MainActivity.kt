@@ -1,6 +1,5 @@
 package com.example.streamchatdemo
 
-import androidx.compose.runtime.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,8 +25,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 
-// Add Greeting so we can showcase all mini-demos
-enum class Screen { Stream, Messages, Greeting, Canvas, Settings }
+// Added Storage so it shows up in menu
+enum class Screen { Stream, Messages, Greeting, Canvas, Settings, Storage }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -78,6 +77,9 @@ private fun HomeMenuOnly() {
                         DropdownMenuItem(text = { Text("Settings") }, onClick = {
                             current = Screen.Settings; menuOpen = false
                         })
+                        DropdownMenuItem(text = { Text("Storage") }, onClick = {
+                            current = Screen.Storage; menuOpen = false
+                        })
                     }
                 }
             )
@@ -90,6 +92,7 @@ private fun HomeMenuOnly() {
                 Screen.Greeting -> GreetingScreen()
                 Screen.Canvas   -> CanvasScreen()
                 Screen.Settings -> SettingsScreen()
+                Screen.Storage  -> StorageScreen()
             }
         }
     }
