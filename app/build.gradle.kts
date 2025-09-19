@@ -86,10 +86,12 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.51.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    // ✅ DataStore (Preferences)
+    // DataStore, EXIF (from your previous tasks)
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
 
+    // NEW: Engine module
+    implementation(project(":core-engine"))
 
     // Tests / tooling
     testImplementation(libs.junit)

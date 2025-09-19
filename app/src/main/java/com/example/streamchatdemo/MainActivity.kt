@@ -21,12 +21,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 
-// Added Storage so it shows up in menu
-enum class Screen { Stream, Messages, Greeting, Canvas, Settings, Storage }
+// Keep this enum in sync with the menu below.
+enum class Screen {
+    Stream, Messages, Greeting, Canvas, Storage, Engine, Settings, Windowing
+}
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -62,24 +68,38 @@ private fun HomeMenuOnly() {
                         expanded = menuOpen,
                         onDismissRequest = { menuOpen = false }
                     ) {
-                        DropdownMenuItem(text = { Text("Stream") }, onClick = {
-                            current = Screen.Stream; menuOpen = false
-                        })
-                        DropdownMenuItem(text = { Text("Messages") }, onClick = {
-                            current = Screen.Messages; menuOpen = false
-                        })
-                        DropdownMenuItem(text = { Text("Greeting") }, onClick = {
-                            current = Screen.Greeting; menuOpen = false
-                        })
-                        DropdownMenuItem(text = { Text("Canvas") }, onClick = {
-                            current = Screen.Canvas; menuOpen = false
-                        })
-                        DropdownMenuItem(text = { Text("Settings") }, onClick = {
-                            current = Screen.Settings; menuOpen = false
-                        })
-                        DropdownMenuItem(text = { Text("Storage") }, onClick = {
-                            current = Screen.Storage; menuOpen = false
-                        })
+                        DropdownMenuItem(
+                            text = { Text("Stream") },
+                            onClick = { current = Screen.Stream; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Messages") },
+                            onClick = { current = Screen.Messages; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Greeting") },
+                            onClick = { current = Screen.Greeting; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Canvas") },
+                            onClick = { current = Screen.Canvas; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Storage & EXIF") },
+                            onClick = { current = Screen.Storage; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Engine (stub)") },
+                            onClick = { current = Screen.Engine; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Settings") },
+                            onClick = { current = Screen.Settings; menuOpen = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Windowing (KV demo)") },
+                            onClick = { current = Screen.Windowing; menuOpen = false }
+                        )
                     }
                 }
             )
@@ -87,12 +107,14 @@ private fun HomeMenuOnly() {
     ) { inner ->
         Column(Modifier.padding(inner)) {
             when (current) {
-                Screen.Stream   -> StreamScreen()
-                Screen.Messages -> MessagesScreen()
-                Screen.Greeting -> GreetingScreen()
-                Screen.Canvas   -> CanvasScreen()
-                Screen.Settings -> SettingsScreen()
-                Screen.Storage  -> StorageScreen()
+                Screen.Stream    -> StreamScreen()
+                Screen.Messages  -> MessagesScreen()
+                Screen.Greeting  -> GreetingScreen()
+                Screen.Canvas    -> CanvasScreen()
+                Screen.Storage   -> StorageScreen()
+                Screen.Engine    -> EngineScreen()
+                Screen.Settings  -> SettingsScreen()
+                Screen.Windowing -> WindowingScreen()
             }
         }
     }

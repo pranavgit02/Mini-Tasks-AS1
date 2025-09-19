@@ -1,0 +1,37 @@
+StreamChatDemo — Rules To Avoid Common Build Errors
+
+1) Library Manifests (modules like :core-engine)
+- Do NOT declare <application>, launcher <activity>, android:label, icons, or themes in library manifests.
+- Keep the library manifest minimal (often just: <manifest />).
+- App-level attributes belong only in the app module’s manifest: `app/src/main/AndroidManifest.xml`.
+
+2) Hilt/DI Module Naming
+- Use legal Kotlin/JVM identifiers for class/object names. Avoid backticks and punctuation.
+- Do not include dots or extensions in type names (e.g., avoid `object `EngineModule.kt``).
+- Match file and type names in PascalCase: `app/src/main/java/com/example/streamchatdemo/di/EngineModule.kt` with `object EngineModule`.
+
+3) Compose Callers Must Be @Composable
+- Any function that calls a @Composable must itself be annotated with @Composable.
+- This applies to local helpers inside Composables too. Either annotate them or inline the Composable calls.
+- Example: A local `fun item(...) = DropdownMenuItem(...)` without @Composable will fail. Prefer direct `DropdownMenuItem(...)` calls or `@Composable fun Item(...)`.
+
+4) Gradle Hygiene
+- `settings.gradle.kts`: include each module only once (e.g., `include(":core-engine")`).
+- `app/build.gradle.kts`: avoid duplicate `implementation(project(":module"))` entries.
+- After structural changes, Sync Gradle; if issues persist, Clean and Rebuild.
+
+5) Package/Folder Consistency
+- Keep package declarations consistent with folder paths for clarity (Kotlin compiles even if they differ, but humans get confused).
+
+6) Quick Troubleshooting Checklist
+- Manifest merge error about android:label/icon/theme → remove app-level attributes from library manifests.
+- Kotlin backend/ASM “Invalid class name” → check for backticked or punctuated class/object names; rename to valid identifiers.
+- Compose error “Functions which invoke @Composable…” → ensure the caller is annotated @Composable (including local functions).
+- Duplicate module or dependency errors → check `settings.gradle.kts` and Gradle dependencies for duplicates.
+
+Context From Recent Fixes
+- Removed `<application>` from `core-engine/src/main/AndroidManifest.xml` (library manifests should not define app attributes).
+- Renamed/relocated Hilt module to `app/src/main/java/com/example/streamchatdemo/di/EngineModule.kt` with `object EngineModule`.
+- Replaced a non-@Composable local helper in `MainActivity.kt` with direct `DropdownMenuItem` calls.
+
+Follow these rules to avoid similar build/runtime issues when adding features like the FakeEngine for streaming token demos.
