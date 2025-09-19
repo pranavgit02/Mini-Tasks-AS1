@@ -75,15 +75,14 @@ fun CanvasScreen() {
             Canvas(
                 modifier = Modifier
                     .matchParentSize()
-                    .pointerInput(boxSize, center, radius) {
+                    .pointerInput(boxSize) {      // or .pointerInput(Unit)
                         detectDragGestures(
                             onDragStart = { down ->
                                 val handleCenter = Offset(center.x + radius, center.y)
                                 val distToHandle = distance(down, handleCenter)
                                 isResizing = distToHandle <= handleGrabRadiusPx
-                                // If not resizing and not inside the circle, ignore drags
                                 if (!isResizing && distance(down, center) > radius) {
-                                    isResizing = false // we'll just no-op on drag
+                                    isResizing = false
                                 }
                             },
                             onDrag = { change, dragAmount ->
@@ -91,11 +90,9 @@ fun CanvasScreen() {
                                 if (boxSize == IntSize.Zero) return@detectDragGestures
 
                                 if (isResizing) {
-                                    // set radius as distance from center to current pointer position
                                     val newR = distance(center, change.position)
                                     radius = clampRadius(newR, center, boxSize, minRadiusPx)
                                 } else {
-                                    // move center by drag amount, clamped to keep circle fully visible
                                     val newCenter = Offset(center.x + dragAmount.x, center.y + dragAmount.y)
                                     center = clampCenter(newCenter, radius, boxSize)
                                 }
@@ -104,6 +101,7 @@ fun CanvasScreen() {
                             onDragCancel = { isResizing = false }
                         )
                     }
+
             ) {
                 // Fill (subtle)
                 drawCircle(
@@ -167,5 +165,4 @@ private val OffsetSaver: Saver<Offset, out Any> = listSaver(
     save = { listOf(it.x, it.y) },
     restore = { list -> Offset(list[0], list[1]) }
 )
-
 
